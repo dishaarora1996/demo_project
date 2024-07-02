@@ -16,15 +16,7 @@ pipeline {
                     // Execute SSH commands on the AWS server
                     sshagent(credentials: ['ssh-key-id']) {
                         // Create directory on AWS server
-                        def sshCommandResult = sshCommand remote: "ssh -o StrictHostKeyChecking=no ${SSH_USER}@${AWS_SERVER}",
-                                                            command: "mkdir -p ${REMOTE_DIR_PATH}"
-                                                            
-                        // Check the result of the SSH command
-                        if (sshCommandResult.exitStatus == 0) {
-                            echo "Directory ${REMOTE_DIR_PATH} created successfully on AWS server"
-                        } else {
-                            error "Failed to create directory ${REMOTE_DIR_PATH} on AWS server. Exit status: ${sshCommandResult.exitStatus}"
-                        }
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@34.219.222.96 uptime'
                     }
                 }
             }
