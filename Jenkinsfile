@@ -15,9 +15,9 @@ pipeline {
                         sh 'rsync -avz --exclude=".git" /var/lib/jenkins/workspace/django-cicd ubuntu@34.219.222.96:/home/ubuntu/project'
 
                         // Step 2: Install virtualenv and set up environment
-                        // sh 'ssh ubuntu@34.219.222.96 "pip3 install virtualenv"'
                         sh 'ssh ubuntu@34.219.222.96 "python3 -m venv /home/ubuntu/project/env"'
                         sh 'ssh ubuntu@34.219.222.96 "source /home/ubuntu/project/env/bin/activate"'
+                        sh 'ssh ubuntu@34.219.222.96 "pip3 install -r requirements.txt"'
                         
                     }
                 }
