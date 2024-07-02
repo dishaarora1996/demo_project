@@ -19,6 +19,8 @@ pipeline {
                         // sh 'ssh ubuntu@34.219.222.96 "source /home/ubuntu/project/env/bin/activate"'
                         // sh 'ssh ubuntu@34.219.222.96 "pip3 install -r requirements.txt"'
                         // sh 'ssh ubuntu@34.219.222.96 "pip3 install -r requirements.txt"'
+                        sh "ssh ubuntu@34.219.222.96 'chmod +x /home/ubuntu/project/django-cicd/envsetup.sh'"
+                        sh 'ssh ubuntu@34.219.222.96 "bash /home/ubuntu/project/django-cicd/envsetup.sh"'
                         
                     }
                 }
