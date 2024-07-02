@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     stages {
-        stage('env Setup') {
+        stage('Copy Files to Server') {
             steps {
                 script {
                     // Execute SSH commands on the AWS server
@@ -16,6 +16,14 @@ pipeline {
 
                     }
                 }
+            }
+        }
+        stage('Setup Python Virtual ENV'){
+            steps {
+                sh '''
+                chmod +x envsetup.sh
+                ./envsetup.sh
+                '''
             }
         }
         stage('st3') {
