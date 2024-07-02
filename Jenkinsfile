@@ -11,13 +11,13 @@ pipeline {
                         // sh 'ssh -o StrictHostKeyChecking=no ubuntu@34.219.222.96 uptime'
                         // sh "ssh ubuntu@34.219.222.96 'mkdir -p /home/ubuntu/project/new_project'"
 
-                        // Step 1: Transfer Django project files to remote server
-                        sh "rsync -avz --exclude=".git" /var/lib/jenkins/workspace/django-cicd ubuntu@34.219.222.96:/home/ubuntu/project"
-                        sh 'ssh ubuntu@34.219.222.96 "pip3 install virtualenv'
-                        sh 'ssh ubuntu@34.219.222.96 "virtualenv env'
-                        sh 'ssh ubuntu@34.219.222.96 "source env/bin/activate'
-                        // sh 'ssh ubuntu@34.219.222.96 "chmod +x /home/ubuntu/project/envsetup.sh"'
-                        // sh "ssh ubuntu@34.219.222.96 'bash -s' < /home/ubuntu/project/envsetup.sh"
+                      // Step 1: Transfer Django project files to remote server
+                        sh 'rsync -avz --exclude=".git" /var/lib/jenkins/workspace/django-cicd ubuntu@34.219.222.96:/home/ubuntu/project'
+
+                        // Step 2: Install virtualenv and set up environment
+                        sh 'ssh ubuntu@34.219.222.96 "pip3 install virtualenv"'
+                        sh 'ssh ubuntu@34.219.222.96 "virtualenv /home/ubuntu/project/env"'
+                        sh 'ssh ubuntu@34.219.222.96 "source /home/ubuntu/project/env/bin/activate"'
                         
                     }
                 }
