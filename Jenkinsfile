@@ -17,6 +17,7 @@ pipeline {
                     sshagent(credentials: ['ssh-key-id']) {
                         // Create directory on AWS server
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@34.219.222.96 uptime'
+                        sh "ssh ubuntu@34.219.222.96 'mkdir -p /home/ubuntu/project/new_project'"
                     }
                 }
             }
