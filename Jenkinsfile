@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     // Execute SSH commands on the AWS server
-                    sshagent(credentials: [SSH_CREDENTIALS]) {
+                    sshagent(credentials: ['ssh-key-id']) {
                         // Create directory on AWS server
                         def sshCommandResult = sshCommand remote: "ssh -o StrictHostKeyChecking=no ${SSH_USER}@${AWS_SERVER}",
                                                             command: "mkdir -p ${REMOTE_DIR_PATH}"
