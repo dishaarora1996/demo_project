@@ -1,8 +1,8 @@
 #!/bin/bash
 
-
+pwd
 touch test1234.txt
-# pwd
+
 # source /home/ubuntu/project/env/bin/activate  >> test.log
 # pip3 install -r requirements.txt  >> test.log
 
