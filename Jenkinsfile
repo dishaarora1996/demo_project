@@ -13,19 +13,15 @@ pipeline {
 
                         // Step 1: Transfer Django project files to remote server
                         sh "scp -r /var/lib/jenkins/workspace/django-cicd ubuntu@34.219.222.96:/home/ubuntu/project"
-
+                        sh '''
+                        chmod +x ubuntu@34.219.222.96:/home/ubuntu/project/envsetup.sh
+                        ubuntu@34.219.222.96:/home/ubuntu/project/envsetup.sh
+                        '''
                     }
                 }
             }
         }
-        stage('Setup Python Virtual ENV'){
-            steps {
-                sh '''
-                chmod +x envsetup.sh
-                ./envsetup.sh
-                '''
-            }
-        }
+        
         stage('st3') {
             steps {
                 echo 'Testing..'
