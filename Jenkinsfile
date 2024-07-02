@@ -13,10 +13,8 @@ pipeline {
 
                         // Step 1: Transfer Django project files to remote server
                         sh "rsync -avz --exclude=".git" /var/lib/jenkins/workspace/django-cicd ubuntu@34.219.222.96:/home/ubuntu/project"
-                        sh '''
-                        chmod +x ubuntu@34.219.222.96:/home/ubuntu/project/envsetup.sh
-                        ubuntu@34.219.222.96:/home/ubuntu/project/envsetup.sh
-                        '''
+                        sh "ssh ubuntu@34.219.222.96 'bash -s' < /home/ubuntu/project/envsetup.sh"
+                        
                     }
                 }
             }
