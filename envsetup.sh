@@ -5,6 +5,7 @@ touch test1234.txt
 
 source /home/ubuntu/project/env/bin/activate  >> test.log
 pip3 install -r /home/ubuntu/project/django-cicd/requirements.txt  >> test.log
+python3 manage.py runserver 0.0.0.0:8000
 
 
 
