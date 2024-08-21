@@ -57,3 +57,21 @@ class Command(BaseCommand):
         MaterialRequestMaster.objects.bulk_create(bulk_create_list, batch_size=1000)
 
         self.stdout.write(self.style.SUCCESS('Successfully inserted 10,000 MaterialRequestMaster records!'))
+
+
+
+
+
+your_project/
+    your_app/
+        management/
+            __init__.py
+            commands/
+                __init__.py
+                insert_material_requests.py
+
+
+
+
+
+python manage.py insert_material_requests
