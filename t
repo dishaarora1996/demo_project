@@ -1,72 +1,45 @@
-
-    $('#user-form').on('submit', function(e) {
-    e.preventDefault();
-    // Remove any existing error messages
-    $('.error').remove();
-    $.ajax({
-        url: "{% url 'cmu_users:create_user_ajax' %}",
-        method: 'POST',
-        data: $(this).serialize(),
-        success: function(response) {
-            if (response.success) {
-                swal({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success",
-                    buttons: false,
-                    timer: 2000,
-                }).then(function() {
-                    $('#exampleModal').modal('hide');
-                    let url = `{% url 'cmu_users:profile_list' usertype_slug="cmu-users" %}`;
-                    // Reload the user list
-                    $.ajax({
-                        url: url,
-                        method: 'GET',
-                        success: function(response) {
-                            $('#user-list-container').html(response.html);
-                        }
-                    });
-                });
-            } else {
-                // Display errors if form is invalid
-                if (response.errors) {
-                    console.log("emailErrors", response.errors);
-
-                    // Display the email error message in the #email-errors element
-                    // $('#email-errors').html(generateErrorHTML(response.errors));
-
-                    displayFieldErrors(response.errors);
-
-                    // Display a modal with the errors
-                    Swal.fire({
-                        title: "",
-                        text: "Please check the highlighted fields for errors.",
-                        icon: "error",
+<script>
+    function submitForm(formId) {
+        const form = $(`#${formId}`);
+        const actionUrl = form.attr('action');
+        const formData = new FormData(form[0]);  // FormData to handle form fields
+        
+        $.ajax({
+            url: actionUrl,  // Form action URL
+            method: 'POST',
+            data: formData,  // Form data
+            processData: false,  // Required for FormData
+            contentType: false,  // Prevent jQuery from setting content-type header
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  // CSRF token for Django
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Handle success case, like showing success message
+                    console.log("Form submitted successfully!");
+                    // You can also add a success message or reload data
+                    swal({
+                        title: "Success!",
+                        text: "Form submitted successfully!",
+                        icon: "success",
+                        buttons: false,
+                        timer: 2000,
                     });
                 } else {
-                    Swal.fire({
-                        title: "",
-                        text: "Failed to create user",
-                        icon: "error",
-                        
-                    });
+                    // Handle validation errors and inject them into form
+                    // Assume response.errors contains the field-specific errors
+                    console.log(response.errors);
+                    displayFieldErrors(response.errors);
                 }
+            },
+            error: function(xhr, status, error) {
+                // Handle any server errors or network failures
+                console.error('Error:', error);
+                swal({
+                    title: "Error!",
+                    text: "An unexpected error occurred. Please try again.",
+                    icon: "error",
+                });
             }
-        }
-    });
-});
-
-function generateErrorHTML(errors) {
-    let html = '<ul>';
-    for (let field in errors) {
-        if (errors.hasOwnProperty(field)) {
-            html += `<li>${errors[field]}</li>`;
-        }
+        });
     }
-    html += '</ul>';
-    return html;
-}
-
-});
-
-</script>
