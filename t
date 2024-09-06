@@ -1,58 +1,31 @@
 
-$('#estate-contact-form').on('submit', function(e) {
-        alert("Hi");
-    e.preventDefault();
-    // Remove any existing error messages
-    $('.error').remove();
-    $.ajax({
-        url: "{% url 'estate:add-estate-contact' %}",
-        method: 'POST',
-        data: $(this).serialize(),
-        success: function(response) {
-            if (response.success) {
-                swal({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success",
-                    buttons: false,
-                    timer: 2000,
-                // }).then(function() {
-                //     $('#exampleModal').modal('hide');
-                //     let url = `{% url 'cmu_users:profile_list' usertype_slug="cmu-users" %}`;
-                //     // Reload the user list
-                //     $.ajax({
-                //         url: url,
-                //         method: 'GET',
-                //         success: function(response) {
-                //             $('#user-list-container').html(response.html);
-                //         }
-                //     });
-                });
-            } else {
-                // Display errors if form is invalid
-                if (response.errors) {
-                    console.log("emailErrors", response.errors);
+def add_estate(request):
+    estate_id = None
+    if request.method == 'POST':
+        print("post")
+        estate_garden_form = EstateGardenForm(request.POST)
+        if estate_garden_form.is_valid():
+            estate_garden = estate_garden_form.save(commit=False)
+            estate_garden.cmu_user = request.user.cmu_user
+            estate_garden.save()
+            estate_id = estate_garden.id
+            return JsonResponse({'success': True, 'estate_id': estate_id})
+        else:
+            return JsonResponse({'success': False}, 'errors: form.errors')
+        print("POST estate_garden", estate_garden_form)
 
-                    // // Display the email error message in the #email-errors element
-                    // // $('#email-errors').html(generateErrorHTML(response.errors));
+    else:
+        estate_garden_form = EstateGardenForm()
+        print("GET estate_garden", estate_garden_form)
 
-                    // displayFieldErrors(response.errors);
+    
+    estate_garden_contact_form = EstateGardenContactForm()    
+    context = {
+        "estate_garden_form": estate_garden_form,
+        "estate_garden_contact_form": estate_garden_contact_form,
 
-                    // Display a modal with the errors
-                    Swal.fire({
-                        title: "",
-                        text: "Please check the highlighted fields for errors.",
-                        icon: "error",
-                    });
-                } else {
-                    Swal.fire({
-                        title: "",
-                        text: "Failed to create user",
-                        icon: "error",
-                        
-                    });
-                }
-            }
-        }
-    });
-});
+        "estate_id": estate_id
+
+    }
+    
+    return CommonMixin.render(request, 'estate/add-estate-garden.html', context)
